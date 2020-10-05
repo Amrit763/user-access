@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Room Maps</title>
+  <style>
+    #map {
+      height: 400px;
+      width: 80%;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Finding the room location</h1>
+  <div id="map"></div>
+  <script>
+    function initMap() {
+      // Map options
+      var options = {
+        zoom: 8,
+        center: { lat: 27.671198, lng: 85.340060 }
+      }
+
+      // New map
+      var map = new google.maps.Map(document.getElementById('map'), options);
+
+      // Listen for click on map
+      google.maps.event.addListener(map, 'click', function (event) {
+        // Add marker
+        addMarker({ coords: event.latLng });
+      });
+
+
+      // Array of markers
+      var markers = [
+        {
+          coords: { lat: 27.825738, lng: 83.570782 },
+          
+          content: '<h1>Damkada bajar</h1>'
+        },
+        {
+          coords: { lat: 27.671198, lng: 85.340060 },
+          content: '<h1>Kathford college</h1>'
+        },
+        {
+          coords: { lat: 27.534350, lng: 84.452499 },
+          content:'<h1>Chitwan National Park'
+        }
+      ];
+
+      // Loop through markers
+      for (var i = 0; i < markers.length; i++) {
+        // Add marker
+        addMarker(markers[i]);
+      }
+
+      // Add Marker Function
+      function addMarker(props) {
+        var marker = new google.maps.Marker({
+          position: props.coords,
+          map: map,
+          //icon:props.iconImage
+        });
+
+        // Check content
+        if (props.content) {
+          var infoWindow = new google.maps.InfoWindow({
+            content: props.content
+          });
+
+          marker.addListener('click', function () {
+            infoWindow.open(map, marker);
+          });
+        }
+      }
+    }
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmVyuYdhnv9HWIU8OqYTXiveIYDZblSYQ&callback=initMap">
+    </script>
+</body>
+
+</html>
