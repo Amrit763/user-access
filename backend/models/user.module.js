@@ -7,11 +7,16 @@ var userSchema = new Schema({
         required: true,
         type: String,
         unique: true,
-        lowercase: true
+        lowercase: true,
+        max: 100
     },
     password: {
         required: true,
         type: String
+    },
+    confirmPassword:{
+        type: String,
+        // required: true
     },
     email: {
         type: String,

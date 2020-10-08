@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var UserModule = require('./../models/user.module')
-var userHelp = require('./../helper/userhelp')
+var UserModule = require('../models/user.module')
+var userHelp = require('../helper/userhelp')
 // const { update } = require('./../models/user.module');
 
 router.get('/', function (req, res, next) {
