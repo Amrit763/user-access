@@ -2,10 +2,20 @@ var express = require('express');
 var router = express.Router();
 var UserModule = require('../models/user.module')
 var userHelp = require('../helper/userhelp')
-// const { update } = require('./../models/user.module');
+var config = require('./../config')
+var bcrypt = require('bcrypt')
+const salt = bcrypt.genSaltSync(config.saltRounds);
+
+
 
 router.get('/', function (req, res, next) {
-  UserModule.find({})
+  console.log("Req.loggined user >>> ", req.loggedInUSer)
+  UserModule.find({}
+    // ,{
+    //   username: 1,
+    //   _id:0
+    // }
+  )
     .sort({
       _id: -1
     })
@@ -55,7 +65,12 @@ router.put('/:id', function (req, res, next) {
     }
     if (user) {
       user = userHelp(req.body, user);
-      user.updatedBy = 'ram'
+      if (req.body.password)
+        user.password = bcrypt.hashSync(req.body.password, salt);
+      // user.updatedBy = user.modifier garera banauna ni milcha i.e: utaa kasle login gareko tesko user name diyera k 
+      console.log('ehefe >>>> ',req.loggedInUSer)
+      user.updatedBy = req.loggedInUSer.username;
+      // user.updatedBy = "Ram"
       user.save(function (err, done) {
         if (err) {
           return next(err);

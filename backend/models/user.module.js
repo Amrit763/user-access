@@ -10,11 +10,14 @@ var userSchema = new Schema({
         lowercase: true,
         max: 100
     },
+    address: {
+        type: String
+    },
     password: {
         required: true,
         type: String
     },
-    confirmPassword:{
+    confirmPassword: {
         type: String,
         // required: true
     },
@@ -31,7 +34,7 @@ var userSchema = new Schema({
     updatedBy: String,
     role: {
         type: String,
-        enum: ['admin', 'landlord', 'visitor']
+        // enum: ['admin', 'landlord', 'visitor']
     }
 }, {
     timestamps: true

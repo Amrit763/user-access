@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/auth', indexRouter);
 // app.use('')
-app.use('/user' ,usersRouter);
+app.use('/user',authentication, usersRouter);
 // app.user('/test',authentication,testRouter)
 
 // catch 404 and forward to error handler
