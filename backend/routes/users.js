@@ -3,6 +3,8 @@ var router = express.Router();
 var UserModule = require('../models/user.module')
 var userHelp = require('../helper/userhelp')
 var config = require('./../config')
+var authorize = require('.././middleware/authorize')
+
 var bcrypt = require('bcrypt')
 const salt = bcrypt.genSaltSync(config.saltRounds);
 
@@ -30,13 +32,14 @@ router.get('/', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
   var id = req.params.id;
   UserModule.findById(id, function (err, user) {
+    console.log('ser >>>', user)
     if (err) {
       return next(err);
     }
     res.json(user);
   })
 })
-router.delete('/:id', function (req, res, next) {
+router.delete('/:id', authorize, function (req, res, next) {
   var id = req.params.id;
   UserModule.findById(id, function (err, user) {
     if (err) {
@@ -68,8 +71,8 @@ router.put('/:id', function (req, res, next) {
       if (req.body.password)
         user.password = bcrypt.hashSync(req.body.password, salt);
       // user.updatedBy = user.modifier garera banauna ni milcha i.e: utaa kasle login gareko tesko user name diyera k 
-      console.log('ehefe >>>> ',req.loggedInUSer)
-      user.updatedBy = req.loggedInUSer.username;
+      // console.log('ehefe >>>> ',req.loggedInUser)
+      user.updatedBy = req.loggedInUser.username;
       // user.updatedBy = "Ram"
       user.save(function (err, done) {
         if (err) {

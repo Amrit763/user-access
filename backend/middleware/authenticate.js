@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
-var config = require('./../config/index')
+var config = require('./../config/index');
+const { findById } = require('./../models/user.module');
 var UserModel = require("./../models/user.module")
 
 module.exports = function (req, res, next) {
@@ -14,49 +15,28 @@ module.exports = function (req, res, next) {
         token = req.headers['token']
     }
     if (token) {
-        jwt.verify(token, config.secret, function (err, done) {
+        jwt.verify(token, config.secret, function (err, decoded) {
 
             if (err) {
                 return next(err)
             }
-            // console.log('decoded >>>>>', decoded);
-            // user haru update vaye pachi decoded ma puranai aaucha so updated aauna lai yo gareko 
-            // UserModel.findById(decoded.id, function (err, user) {
-            //     if (err) {
-            //         return next(err);
-            //     }
-            //     console.log('useris>>> ',user)
-            //     if(user){
-            //     req.loggedInUser = user;
-            //         console.log('authenticate batai loggedInUser>>>',req.loggedInUser)
-            //         return next();
-            //     }
-            //     else{
-            //         next({
-            //             msg : "Token user has been already removed"
-            //         })
-            //     }
-            // })
-            // suruma yo garr
-            // req.loggedInUSer = decoded;
+            UserModel.findById(decoded.id,function(err,user){
+                if(err){
+                    return next(err);
+                }
+                if(user){
+                    req.loggedInUser =user;
+                    return next();
+                }
+                else{
+                    next({
+                        msg: 'token user is removed from system'
+                    })
+                }
+            })
+            // console.log('decoded >>>  ', decoded);
+            // req.loggedInUser = decoded;
             // return next();
-
-
-            UserModel.findById(done.id)
-                .exec((err, user) => {
-                    if (err) {
-                        return next(err);
-                    }
-                    if (user) {
-                        req.loggedInUser = user;
-                        return next();
-                    } else {
-                        return next({
-                            message: 'User with token is removed from system'
-                        })
-                    }
-                })
-
         })
     }
     else {

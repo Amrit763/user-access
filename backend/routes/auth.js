@@ -26,14 +26,11 @@ router.post('/login', (req, res, next) => {
         isMatched = bcrypt.compareSync(req.body.password, user.password);
         if (isMatched) {
           // json web token
-          var token = jwt.sign({ name: user.username, id: user._id }, config.secret);
+          var token = jwt.sign({ id: user._id }, config.secret);
           res.json({
             token: token,
             user: user
           });
-          // res.json({
-          //   user: user
-          // })
         }
         else {
           res.json({
@@ -74,7 +71,6 @@ router.post('/register', (req, res, next) => {
     console.log('From authentication >>>>>>>>', user)
   })
 })
-
 
 module.exports = router;
 

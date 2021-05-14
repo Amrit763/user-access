@@ -12,11 +12,6 @@ module.exports = (req, user) => {
         user.username = req.username;
 
     if (req.password) {
-        // if (req.confirmPassword == req.password) {
-        //     user.password = bcrypt.hashSync(req.password, config.saltRounds);
-        // } else {
-        //     console.log('password and confirm password didnt match')
-        // }
         user.password = bcrypt.hashSync(req.password, config.saltRounds);
         // user.password = req.password
     }
