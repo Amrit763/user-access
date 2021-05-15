@@ -43,5 +43,5 @@ app.listen(config.port, function (err, done) {
   if (err) {
     console.log('Server listening fail >>>>> ', err)
   }
-  console.log('Serer listening at port >>>> ', config.port)
+  console.log('Serer listening at port .......>>>> ', config.port)
 })
